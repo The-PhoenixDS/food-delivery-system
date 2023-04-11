@@ -1,3 +1,0 @@
-# food-delivery-system
-
-gyugy
