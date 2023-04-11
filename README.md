@@ -3,7 +3,6 @@
 gyugy
 
 mnkjnlk
-mkjn j
+mkjn jl
 mknink
-mkmnk
-\njhbj
+
