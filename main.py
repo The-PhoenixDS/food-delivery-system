@@ -13,6 +13,8 @@ if Order =="No":
  exit()
 else:
  print ("Than
+        joiujhi
+        hiuhu
 hfgcgcv
 nextOrder = True
 
