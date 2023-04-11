@@ -66,7 +66,10 @@ while Y <Counter:
  print ("******")
  print (Myorderfood[Y])
  Y=Y+1
+ 
+ def display_menu():
+  menu = ["wrap","wings","fries"]
+  return menu
+ display_menu()
 
  
- hiughiukj
- joiuhoiu
