@@ -12,7 +12,7 @@ Order = input("Can I Take Your Order?")
 if Order =="No":
  exit()
 else:
- print ("Thank You")gfhgvjhgvhv
+ print ("Than
 
 nextOrder = True
 
