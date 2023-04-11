@@ -12,10 +12,8 @@ Order = input("Can I Take Your Order?")
 if Order =="No":
  exit()
 else:
- print ("Than
-        joiujhi
-        hiuhu
-hfgcgcv
+ print ("Thank you")
+        
 nextOrder = True
 
 while nextOrder==True:
