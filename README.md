@@ -4,3 +4,6 @@ gyugy
 
 mnkjnlk
 mkjn j
+mknink
+mkmnk
+\njhbj
