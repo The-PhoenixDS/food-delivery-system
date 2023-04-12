@@ -1,0 +1,6 @@
+Burger,40.00
+Drink,15.00
+Fries,20.00
+Wraps,32.00
+Wings.43.00
+Lamb Chops,76.00
