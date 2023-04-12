@@ -68,5 +68,51 @@ while Y <Counter:
  Y=Y+1
 
 
-def check_balance:
-    gjhbkj
+# Define function for cash payment
+def process_cash_payment(amount):
+    print(f"Please pay R{amount} in cash.")
+    cash = float(input("Enter amount paid: "))
+    while cash < amount:
+        print("Insufficient cash, please try again.")
+        cash = float(input("Enter amount paid: "))
+    change = cash - amount
+    print(f"Amount paid is R{cash}. Your change is {change:.2f}.")
+    print("Payment successful")
+    
+    
+       # Define function for card payment
+   
+   
+def process_card_payment(amount):
+    
+    user_pin = "1234"
+    user_balance = 1000
+    card_pin_number = input("Enter card pin number: ")
+    
+     # Verify PIN
+    if card_pin_number == user_pin and amount <= user_balance:
+        # Update user's balance
+        user_balance -= amount
+        # Send message of remaining balance
+        print("Payment successful. Remaining balance: R{}".format(user_balance))
+        print(f"Processing payment of R{amount:.2f} with card ")
+        print("Payment successful.")
+    else:
+        print("Incorrect PIN or insufficient funds . Payment failed.")
+        print(f"Processing payment of R{amount:.2f} with card ")
+        print("Payment not successful.")
+        
+        # Main payment program
+        def payments():
+            amount = float(input("Enter amount to be paid: "))
+            payment_method = input("Enter payment method (cash or card): ")
+            if payment_method.lower() == "cash":
+                process_cash_payment(amount)
+            elif payment_method.lower() == "card":
+                process_card_payment(amount)
+            else:
+                print("Invalid payment method. Please try again.")
+                payments()
+
+     #Run the program
+    payments()
