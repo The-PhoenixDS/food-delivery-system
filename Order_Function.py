@@ -65,3 +65,46 @@ def take_order():
 
 
 take_order()
+
+
+ 
+    
+def cancel_order():
+    
+    onumber = input("Plesae give us an order number")
+    conumber = onumber +  'cancel'
+    # Read in the file
+    with open('/Users/damacm182_/Desktop/orders.csv', 'r') as file :
+        filedata = file.read()
+    
+
+    # Replace the target string
+    filedata = filedata.replace(onumber,conumber )
+    
+
+    # Write the file out again
+    with open('/Users/damacm182_/Desktop/orders.csv', 'w') as file:
+        file.write(filedata)
+
+
+def view_cancelled_orders():
+    with open(r'/Users/damacm182_/Desktop/orders.csv', 'r') as fp:
+        # read all lines in a list
+        lines = fp.readlines()
+        for line in lines:
+            # check if string present on a current line
+            if 'cancel' in line[0:10] :
+                print(line)
+
+
+orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
+
+if orderc == "1":
+    cancel_order()
+    print("Order cancelled succesfully")
+elif orderc == "2":
+    view_cancelled_orders()
+else:
+    print("Invalid selection")
+    exit()
+   
