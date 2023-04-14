@@ -143,5 +143,18 @@ while True:
     else:
         print("Invalid input. Please enter 'Y' or 'N'.")
         
+        
+        
+        
+# Marcus cancel
+# here is the code for the search function
+        
 
+def search():
+    order_num = input("Please give me your order number:")
+    with open('order.txt', 'r') as f:
+        for line in f:
+            if order_num in line:
+                print(line)
 
+search()
