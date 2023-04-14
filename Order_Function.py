@@ -111,7 +111,10 @@ search()
 def cancel_order():
     newlines = []
 
-    onumber = input("Plesae give us an order number")
+    orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
+
+    if orderc == "1":
+        onumber = input("Please give us an order number")
     # Read in the file
     with open('/Users/damacm182_/Documents/orders.txt', 'r') as file :
         for line in file:

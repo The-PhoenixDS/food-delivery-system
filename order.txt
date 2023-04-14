@@ -1,0 +1,16 @@
+3434, 230, Burger, Drink, Fries, out
+5465, 230, Burger, Drink, Fries, pending
+7644, 230, Burger, Drink, Fries
+6787, 230, Burger, Drink, Fries
+9876, 230, Burger, Drink, Fries
+5454, 230, Burger, Drink, Fries
+5324, 230, Burger, Drink, Fries
+0987, 230, Burger, Drink, Fries
+8934, 230, Burger, Drink, Fries
+0987, 230, Burger, Drink, Fries
+0988, 230, Burger, Drink, Fries
+0798, 230, Burger, Drink, Fries
+0577, 230, Burger, Drink, Fries
+0345, 230, Burger, Drink, Fries
+0443, 230, Burger, Drink, Fries
+0345, 230, Burger, Drink, Fries
