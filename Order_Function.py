@@ -1,19 +1,6 @@
 import random
 import datetime
 now = datetime.datetime.now()
-with open('Menu_Description.txt', 'r') as f:
-        menu = {}
-        for line in f:
-            values = line.strip().split(',')
-            if len(values) == 2:
-                food_name = values[0].strip()
-                v = values[1].strip('\\')
-                v =v.strip('R')
-                v =v.strip('}')
-                price = float(v.strip('\\'))
-                menu[food_name] = price
-        for food_name, price in menu.items():
-            print(f'{food_name}  R{price:.2f}')
 
 
 def take_order():
