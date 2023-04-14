@@ -69,47 +69,6 @@ take_order()
 
  
     
-def cancel_order():
-    
-    onumber = input("Plesae give us an order number")
-    conumber = onumber +  'cancel'
-    # Read in the file
-    with open('/Users/damacm182_/Desktop/orders.csv', 'r') as file :
-        filedata = file.read()
-    
-
-    # Replace the target string
-    filedata = filedata.replace(onumber,conumber )
-    
-
-    # Write the file out again
-    with open('/Users/damacm182_/Desktop/orders.csv', 'w') as file:
-        file.write(filedata)
-
-
-def view_cancelled_orders():
-    with open(r'/Users/damacm182_/Desktop/orders.csv', 'r') as fp:
-        # read all lines in a list
-        lines = fp.readlines()
-        for line in lines:
-            # check if string present on a current line
-            if 'cancel' in line[0:10] :
-                print(line)
-
-
-orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
-
-if orderc == "1":
-    cancel_order()
-    print("Order cancelled succesfully")
-elif orderc == "2":
-    view_cancelled_orders()
-else:
-    print("Invalid selection")
-    exit()
-   
-
-
 # ask the user if they want to edit their order
 while True:
     answer = input("Would you like to edit your order? (Y/N): ")
@@ -158,5 +117,49 @@ def search():
                 print(line)
 
 search()
+
+// Cancel Order
+ 
+    
+def cancel_order():
+    newlines = []
+
+    onumber = input("Plesae give us an order number")
+    # Read in the file
+    with open('/Users/damacm182_/Documents/orders.txt', 'r') as file :
+        for line in file:
+            if onumber in line:
+               if "cancelled" in line:
+                    print("Order already cancelled")
+               elif "pending" in line:
+                    print("Order cancelled successfully")
+                    newlines.append(line.replace('pending', 'cancelled'))
+               else:
+                    print("cannot cancel,order already cancelled")
+                    newlines.append(line)
+            else:
+                newlines.append(line)
+
+
+            with open('order.txt', 'w') as f:
+                    for line in newlines:
+                        f.write(line)
+
+    
+
+
+def view_cancelled_orders():
+    print("\nHere is a list of all cancelled orders:")
+    with open(r'/Users/damacm182_/Documents/orders.txt', 'r') as fp:
+        for line in fp:
+            # check if string present on a current line
+            if 'cancelled' in line :
+                print(line)
+                
+                
+cancel_order()
+
+
+orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
 
 
