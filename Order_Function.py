@@ -44,11 +44,16 @@ def take_order():
             print(order_line, end='')
             f.write(order_line)
 
+        status_line = f"{Status},{Payment} "
         total_line = f"R{total_cost:.2f}\n"
+        f.write(status_line)
 
         f.write(total_line)
 
     print(f"Total cost: {total_cost:.2f}")
+
+
+take_order()
 
 
 # 2()
