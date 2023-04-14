@@ -108,3 +108,40 @@ else:
     print("Invalid selection")
     exit()
    
+
+
+# ask the user if they want to edit their order
+while True:
+    answer = input("Would you like to edit your order? (Y/N): ")
+    if answer == "Y":
+        
+# give the user options to add or remove an item
+        while True:
+            edit_answer = input("What would you like to do? Add or Remove an item? (Add/Remove): ")
+            if edit_answer == "Add":
+                item_to_add = input("Please enter the item you would like to Add: ")
+                if item_to_add == "Burger":  
+                    burger_counter=burger_counter+1
+                print(f"{item_to_add} has been added to your order.")
+                
+                break
+# remove the item from the order list
+            elif edit_answer == "Remove":
+                item_to_remove = input("Please enter the item you would like to remove: ")
+                if item_to_remove == "Burger":
+                    burger_counter=burger_counter-1
+                print(f"{item_to_remove} has been removed from your order.")
+                break
+            else:
+                print(f"Sorry, {Myorderfood} is not in your order.")
+        else:
+                print("Invalid input. Please enter 'Add' or 'Remove'.")
+    
+    elif answer == "N":
+        print("Thank you for your order.")
+        break
+    else:
+        print("Invalid input. Please enter 'Y' or 'N'.")
+        
+
+
