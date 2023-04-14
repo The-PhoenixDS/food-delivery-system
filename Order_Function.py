@@ -1,19 +1,6 @@
 import random
 import datetime
 now = datetime.datetime.now()
-with open('Menu_Description.txt', 'r') as f:
-        menu = {}
-        for line in f:
-            values = line.strip().split(',')
-            if len(values) == 2:
-                food_name = values[0].strip()
-                v = values[1].strip('\\')
-                v =v.strip('R')
-                v =v.strip('}')
-                price = float(v.strip('\\'))
-                menu[food_name] = price
-        for food_name, price in menu.items():
-            print(f'{food_name}  R{price:.2f}')
 
 
 def take_order():
@@ -69,6 +56,7 @@ def take_order():
 
  
     
+<<<<<<< HEAD
 def cancel_order():
     
     onumber = input("Plesae give us an order number")
@@ -114,6 +102,12 @@ def view_cancelled_orders():
 # while True:
 #     answer = input("Would you like to edit your order? (Y/N): ")
 #     if answer == "Y":
+
+# ask the user if they want to edit their order
+while True:
+    answer = input("Would you like to edit your order? (Y/N): ")
+    if answer == "Y":
+
         
 # # give the user options to add or remove an item
 #         while True:
@@ -158,6 +152,50 @@ def search():
                 print(line)
 
 # search()
+
+# Cancel Order
+ 
+    
+def cancel_order():
+    newlines = []
+
+    onumber = input("Plesae give us an order number")
+    # Read in the file
+    with open('/Users/damacm182_/Documents/orders.txt', 'r') as file :
+        for line in file:
+            if onumber in line:
+               if "cancelled" in line:
+                    print("Order already cancelled")
+               elif "pending" in line:
+                    print("Order cancelled successfully")
+                    newlines.append(line.replace('pending', 'cancelled'))
+               else:
+                    print("cannot cancel,order already cancelled")
+                    newlines.append(line)
+            else:
+                newlines.append(line)
+
+
+            with open('order.txt', 'w') as f:
+                    for line in newlines:
+                        f.write(line)
+
+    
+
+
+def view_cancelled_orders():
+    print("\nHere is a list of all cancelled orders:")
+    with open(r'/Users/damacm182_/Documents/orders.txt', 'r') as fp:
+        for line in fp:
+            # check if string present on a current line
+            if 'cancelled' in line :
+                print(line)
+                
+                
+cancel_order()
+
+
+orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
 
 
 
@@ -242,6 +280,24 @@ def payment_option():
     elif payment_option == "card":
             card_payment(amount)
     else:
+<<<<<<< HEAD
          print("Error: Invalid payment option.")
          
 payment_option()
+=======
+        print("Error: Incorrect PIN.")
+
+
+
+# main program
+amount = float(input("Please enter the amount to be paid: "))
+
+payment_option = input("Please choose a payment option (cash or card): ")
+
+if payment_option == "cash":
+    cash_payment(amount)
+elif payment_option == "card":
+    card_payment(amount)
+else:
+    print("Error: Invalid payment option.")
+>>>>>>> fd592d1761d63d26a4c8ee92bbbd099311893149
