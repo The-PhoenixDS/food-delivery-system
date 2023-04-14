@@ -1,19 +1,6 @@
 import random
 import datetime
 now = datetime.datetime.now()
-with open('Menu_Description.txt', 'r') as f:
-        menu = {}
-        for line in f:
-            values = line.strip().split(',')
-            if len(values) == 2:
-                food_name = values[0].strip()
-                v = values[1].strip('\\')
-                v =v.strip('R')
-                v =v.strip('}')
-                price = float(v.strip('\\'))
-                menu[food_name] = price
-        for food_name, price in menu.items():
-            print(f'{food_name}  R{price:.2f}')
 
 
 def take_order():
@@ -163,3 +150,53 @@ cancel_order()
 orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
 
 
+
+def cash_payment(amount):
+    print("You have chosen to pay by cash.")
+    print(f"The total amount to be paid is R{amount:.2f}.")
+    cash = float(input("Enter amount paid: "))
+    while cash < amount:
+        print(" Your money is short, please add more or cancel the order.")
+        cash = float(input("Enter amount paid: "))
+    change = cash - amount
+    print(f"Amount paid is R{cash}. Your change is {change:.2f}.")
+    print("Payment successful")
+    print("Thank you for your payment!")
+    
+    
+# function for card payment
+def card_payment(amount):
+    print("You have chosen to pay by card.")
+    pin = input("Please enter your PIN: ")
+
+    with open("/Users/damacm187/Documents/user.txt", "r") as f:
+        lines = f.readlines()
+        user_pin = lines[1][:4]   # extract the first 4 characters of the second line
+        balance = float(lines[1][4:13])   # extract characters 5-13 of the second line and convert to float
+        card_id = lines[1][6:].strip()  
+
+    if pin == user_pin:
+        print("PIN verification successful.")
+        if amount <= balance:
+            # update user balance in file
+            with open("/Users/damacm187/Documents/user.txt", "w") as f:
+                f.write(str(balance - amount))
+            print(f"Payment successful. Your remaining balance is R{balance - amount:.2f}.")
+        else:
+            print("Error: Insufficient balance.")
+    else:
+        print("Error: Incorrect PIN.")
+
+
+
+# main program
+amount = float(input("Please enter the amount to be paid: "))
+
+payment_option = input("Please choose a payment option (cash or card): ")
+
+if payment_option == "cash":
+    cash_payment(amount)
+elif payment_option == "card":
+    card_payment(amount)
+else:
+    print("Error: Invalid payment option.")
