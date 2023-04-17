@@ -243,22 +243,24 @@ def card_payment(amount):
         for line_bank in f:
             if acc_num and pin in line_bank:
                 balance = line_bank[14:]
-                new_balance = float(balance) -  amount
-                newlines_bank.append(line_bank.replace(str(balance), str(new_balance)))
-                newlines_bank.append("\n")
+                if balance >= amount:
+                    new_balance = float(balance) -  amount
+                    newlines_bank.append(line_bank.replace(str(balance), str(new_balance)))
+                    newlines_bank.append("\n")
                 
-                with open('order.txt','r') as f:
-                    newlines = []
-                    for line in f:
-                        if onumber in line:
-                            newlines.append(line.replace('not paid', 'paid'))
-                        else:
-                            newlines.append(line)
+                    with open('order.txt','r') as f:
+                        newlines = []
+                        for line in f:
+                            if onumber in line:
+                                newlines.append(line.replace('not paid', 'paid'))
+                            else:
+                                newlines.append(line)
 
-                with open('order.txt', 'w') as f:
-                    for line in newlines:
-                        f.write(line)
-                 
+                    with open('order.txt', 'w') as f:
+                        for line in newlines:
+                            f.write(line)
+                else:
+                     print("Balance insufficient")
                 
             else:
                 newlines_bank.append(line_bank)
