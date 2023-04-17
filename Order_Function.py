@@ -123,7 +123,7 @@ while True:
                 item_to_add = input("Please enter the item you would like to Add: ")
                 if item_to_add == "Burger":  
                     burger_counter=burger_counter+1
-                print(f"{item_to_add} has been added to your order.")
+                    print(f"{item_to_add} has been added to your order.")
                 
                 break
 # remove the item from the order list
@@ -131,10 +131,10 @@ while True:
                 item_to_remove = input("Please enter the item you would like to remove: ")
                 if item_to_remove == "Burger":
                     burger_counter=burger_counter-1
-                print(f"{item_to_remove} has been removed from your order.")
-                break
-            else:
-                print(f"Sorry, {Myorderfood} is not in your order.")
+                    print(f"{item_to_remove} has been removed from your order.")
+                    break
+                else:
+                    print(f"Sorry, {Myorderfood} is not in your order.")
         else:
                 print("Invalid input. Please enter 'Add' or 'Remove'.")
     
@@ -143,6 +143,7 @@ while True:
         break
     else:
         print("Invalid input. Please enter 'Y' or 'N'.")
+        
         
 
 
