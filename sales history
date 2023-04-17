@@ -12,3 +12,5 @@ def search_items_list():
                 total_sales = total_sales + int(sales)
     print(total_items)
     print("R " + str(total_sales))
+
+search_items_list()
