@@ -55,10 +55,6 @@ def take_order():
 
 # 2()
 
-
- 
-    
-<<<<<<< HEAD
 def cancel_order():
     
     onumber = input("Plesae give us an order number")
@@ -87,72 +83,77 @@ def view_cancelled_orders():
                 print(line)
 
 
-# orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
-
-# if orderc == "1":
-#     cancel_order()
-#     print("Order cancelled succesfully")
-# elif orderc == "2":
-#     view_cancelled_orders()
-# else:
-#     print("Invalid selection")
-#     exit()
    
-hfdfnhfjhvghj
-\gjyfyhfj
+
 
 # # ask the user if they want to edit their order
-# while True:
-#     answer = input("Would you like to edit your order? (Y/N): ")
-#     if answer == "Y":
+def edit_order():
+    # Define the menu
+    menu = {
+        'Burger': 40.00,
+        'Drink': 15.00,
+        'Fries': 20.00,
+        'Wraps': 32.00,
+        'Wings': 43.00,
+        'Lamb Chops': 76.00,
+    }
 
-# ask the user if they want to edit their order
-while True:
+    # Prompt the user to enter their order number
+    onum = input("Please enter your order number: ")
+
+    # Ask the user whether they want to edit their order
     answer = input("Would you like to edit your order? (Y/N): ")
-    if answer == "Y":
+    if answer.upper() == "Y":
+        # Ask the user whether they want to add or remove an item
+        edit_answer = input("What would you like to do? Add or Remove an item? (Add/Remove): ")
+        if edit_answer.lower() == "add":
+            # Prompt the user to enter the item they want to add
+            item_to_add = input("Please enter the item you would like to add: ")
 
-        
-# # give the user options to add or remove an item
-#         while True:
-#             edit_answer = input("What would you like to do? Add or Remove an item? (Add/Remove): ")
-#             if edit_answer == "Add":
-#                 item_to_add = input("Please enter the item you would like to Add: ")
-#                 if item_to_add == "Burger":  
-#                     burger_counter=burger_counter+1
-#                 print(f"{item_to_add} has been added to your order.")
-                
-#                 break
-# # remove the item from the order list
-#             elif edit_answer == "Remove":
-#                 item_to_remove = input("Please enter the item you would like to remove: ")
-#                 if item_to_remove == "Burger":
-#                     burger_counter=burger_counter-1
-#                 print(f"{item_to_remove} has been removed from your order.")
-#                 break
-#             else:
-#                 print(f"Sorry, {Myorderfood} is not in your order.")
-#         else:
-#                 print("Invalid input. Please enter 'Add' or 'Remove'.")
-    
-#     elif answer == "N":
-#         print("Thank you for your order.")
-#         break
-#     else:
-#         print("Invalid input. Please enter 'Y' or 'N'.")
-        
-        
-        
-        
-# Marcus cancel
-# here is the code for the search function
-        
+            # Check if the item is in the menu
+            if item_to_add in menu:
+                # Read the order file and update the order
+                with open('order.txt', 'r') as f:
+                    newlines = []
+                    item_added = False
+                    for line in f:
+                        if onum in line and item_to_add in line:
+                            # Update the quantity of the item
+                            parts = line.split(',')
+                            old_quantity = int(parts[-2])
+                            new_quantity = old_quantity + 1
+                            parts[-2] = str(new_quantity)
 
-def search():
-    order_num = input("Please give me your order number:")
-    with open('order.txt', 'r') as f:
-        for line in f:
-            if order_num in line:
-                print(line)
+                            # Update the price of the order
+                            old_price = float(parts[-3][1:])
+                            item_price = menu[item_to_add]
+                            new_price = old_price + item_price
+                            parts[-3] = f" ${new_price:.2f}"
+
+                            # Concatenate the updated line
+                            updated_line = ",".join(parts)
+                            newlines.append(updated_line)
+                            item_added = True
+                        else:
+                            newlines.append(line)
+
+                    # If the item was not already in the order, add it
+                    if not item_added:
+                        new_item = f",{item_to_add},1,${menu[item_to_add]:.2f}\n"
+                        newlines.append(f"{onum}{new_item}")
+
+                # Write the updated order to the file
+                with open('order.txt', 'w') as f:
+                    for line in newlines:
+                        f.write(line)
+
+                print(f"{item_to_add} has been added to your order.")
+            else:
+                print(f"{item_to_add} is not in the menu.")
+        else:
+            print("Sorry, only adding items is supported at the moment.")
+    else:
+        print("Order not modified.")
 
 
 # Cancel Order
@@ -287,8 +288,8 @@ def main():
 
     if user_option == 1:
         take_order()
-    # elif user_option == 2:
-    #     edit_order()
+    elif user_option == 2:
+         edit_order()
     elif user_option == 3:
         cancel_order()
     elif user_option == 4:
