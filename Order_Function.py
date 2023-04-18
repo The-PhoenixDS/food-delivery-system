@@ -19,6 +19,8 @@ def take_order():
     while True:
         food_name = input("What would you like to order? (type 'n' to finish) ")
         if food_name == 'n':
+            Status = 'Preparing'
+            Payment = 'Not Paid'
             break
 
         if food_name not in menu:
@@ -32,6 +34,8 @@ def take_order():
         total = menu[food_name] * item_num
         order[food_name] = item_num
         total_cost += total
+        
+        print(f"{food_name}:{total:.2f}")
 
         order_number = random.randint(10, 1000)
         date = now.strftime("%Y-%m-%d")
@@ -40,7 +44,7 @@ def take_order():
     with open('order.txt', 'a') as f:
         f.write(str(order_number) + ',' + str(date) + ',' + str(time) + ',')
         for food_name, item_num,  in order.items():
-            order_line = f"{food_name},{item_num},"
+            order_line = f"{food_name},{item_num},{total:.2f},"
             print(order_line, end='')
             f.write(order_line)
 
