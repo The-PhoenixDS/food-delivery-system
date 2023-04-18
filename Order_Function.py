@@ -205,6 +205,7 @@ def store_bank_account(type_of_payment, amount):
                 new_bal = float(old_bal) + float(amount)
                 newlines.append(line.replace(str(old_bal),str(new_bal) ))
                 print("Order paid successfully")
+                main()
             else:
                 newlines.append(line)         
     with open('store_bank_account.txt', 'w') as f:
