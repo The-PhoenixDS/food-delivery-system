@@ -17,3 +17,7 @@
 766,2023-04-18,10:16:48,Burger,2,Pending,paid,80.00
 741,2023-04-18,10:17:05,Burger,2,Pending,paid,80.00
 685,2023-04-18,10:17:45,Burger,2,Pending,paid,80.00
+300,2023-04-18,10:27:09,Burger,2,Pending,paid,80.00
+518,2023-04-18,10:28:36,Burger,1,Pending,paid,40.00
+773,2023-04-18,10:29:12,Burger,1,Pending,paid,40.00
+109,2023-04-18,10:30:59,Burger,2,Pending,paid,80.00
