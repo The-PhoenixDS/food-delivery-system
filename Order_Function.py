@@ -46,7 +46,7 @@ def take_order():
             print(order_line, end='')
             f.write(order_line)
 
-        status_line = f"{status},{paid_or_not},"
+        status_line = f"{Status},{Payment},"
         total_line = f"{total_cost:.2f}\n"
         f.write(status_line)
 
@@ -344,5 +344,11 @@ def main():
         search()
     elif user_option == 5:
         search_sales_list()
-
+        
+    Repeat = input("Would you like to return to Main_Menu?").lower()
+    if Repeat == "Yes":
+        main()
+    else:
+        print("Thank You Bye")
+        exit()
 main()
