@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 972,2023-04-14,09:32:07,Burger,2,Fries,1,R100.00, paid, cancelled
 879,2023-04-14,09:34:37,Burger,3,Fries,6,R240.00, paid, cancelled
 895,2023-04-14,12:13:44,Burger,3,Fries,2,Drink,1,R175.00, paid, out
@@ -7,3 +8,24 @@
 200,2023-04-14,12:19:25,Burger,12,R480.00
 740,2023-04-18,09:08:24,Burger,2,45.00,Fries,3,45.00,Drink,3,45.00,Preparing,Not Paid R185.00
 881,2023-04-18,09:42:29,Burger,5,75.00,Fries,5,75.00,Drink,5,75.00,Preparing,Not Paid R375.00
+=======
+600,2023-04-18,09:48:57,Fries,2,Pending,paid,80.00
+523,2023-04-18,09:59:23,Burger,1,Pending,paid,40.00
+259,2023-04-18,09:59:23,Fries,2,Pending,paid,40.00
+403,2023-04-18,10:05:27,Fries,1,Pending,paid,20.00
+44,2023-04-18,10:07:27,Burger,3,Pending,paid,120.00
+865,2023-04-18,10:08:02,Fries,1,Pending,paid,20.00
+959,2023-04-18,10:08:55,Burger,1,Pending,paid,40.00
+601,2023-04-18,10:09:23,Burger,2,Pending,paid,80.00
+470,2023-04-18,10:10:09,Burger,1,Pending,paid,40.00
+247,2023-04-18,10:11:16,Burger,2,Pending,paid,80.00
+148,2023-04-18,10:11:28,Burger,2,Pending,paid,80.00
+11,2023-04-18,10:12:52,Burger,1,Pending,paid,40.00
+917,2023-04-18,10:13:28,Burger,2,Pending,paid,80.00
+835,2023-04-18,10:14:24,Burger,2,Pending,paid,80.00
+384,2023-04-18,10:15:04,Burger,2,Pending,paid,80.00
+417,2023-04-18,10:15:22,Burger,2,Pending,paid,80.00
+766,2023-04-18,10:16:48,Burger,2,Pending,paid,80.00
+741,2023-04-18,10:17:05,Burger,2,Pending,paid,80.00
+685,2023-04-18,10:17:45,Burger,2,Pending,paid,80.00
+>>>>>>> day1

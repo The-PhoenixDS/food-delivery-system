@@ -34,8 +34,6 @@ def take_order():
         total = menu[food_name] * item_num
         order[food_name] = item_num
         total_cost += total
-        
-        print(f"{food_name}:{total:.2f}")
 
         order_number = random.randint(10, 1000)
         date = now.strftime("%Y-%m-%d")
@@ -48,14 +46,14 @@ def take_order():
             print(order_line, end='')
             f.write(order_line)
 
-        status_line = f"{Status},{Payment} "
-        total_line = f"R{total_cost:.2f}\n"
+        status_line = f"{status},{paid_or_not},"
+        total_line = f"{total_cost:.2f}\n"
         f.write(status_line)
 
         f.write(total_line)
 
     print(f"Total cost: {total_cost:.2f}")
-
+    payment_option(order_number, total_cost)
 
 # 2()
 
@@ -195,22 +193,41 @@ def cancel_order():
                     for line in newlines:
                         f.write(line)
     # view_cancelled_orders()
+    
+def store_bank_account(type_of_payment, amount):
 
-def cash_payment(amount):
+    with open('store_bank_account.txt','r') as f:
+        newlines = []
+        for line in f:
+            if type_of_payment in line:
+                old_bal = (line.split(","))
+                old_bal = old_bal[1]
+                new_bal = float(old_bal) + float(amount)
+                newlines.append(line.replace(str(old_bal),str(new_bal) ))
+                print("Order paid successfully")
+            else:
+                newlines.append(line)         
+    with open('store_bank_account.txt', 'w') as f:
+        for line in newlines:
+            f.write("\n")
+            f.write(line)
+
+def cash_payment(onum, total):
 
     print("You have chosen to pay by cash.")
-    print(f"The total amount to be paid is R{amount:.2f}.")
+    print(f"The total amount to be paid is R{total:.2f}.")
     
     cash = float(input("Enter amount paid: "))
-    onumber = input("Plesae give us an order number")
-
-    while cash < amount:
+    onumber = str(onum)
+    pay = total
+    while cash < pay:
         print(" Your money is short, please add more or cancel the order.")
         cash = float(input("Enter amount paid: "))
-    change = cash - amount
+    change = cash - pay
     print(f"Amount paid is R{cash}. Your change is {change:.2f}.")
     print("Payment successful")
     print("Thank you for your payment!")
+    store_bank_account("cash", pay)
     
     with open('order.txt','r') as f:
         newlines = []
@@ -224,12 +241,11 @@ def cash_payment(amount):
         for line in newlines:
             f.write(line)
     
-    
 # function for card payment
-def card_payment(amount):
+def card_payment(onum, total):
     print("You have chosen to pay by card.")
-    onumber = input("Please give me your order number:")
-    amount = float(input("Please enter the amount to be paid:"))
+    onumber = str(onum)
+    amount = total
     acc_num = input("Please enter acc number : ")
     pin = input("Please enter your PIN: ")
   
@@ -239,22 +255,26 @@ def card_payment(amount):
         for line_bank in f:
             if acc_num and pin in line_bank:
                 balance = line_bank[14:]
-                new_balance = float(balance) -  amount
-                newlines_bank.append(line_bank.replace(str(balance), str(new_balance)))
-                newlines_bank.append("\n")
-                
-                with open('order.txt','r') as f:
-                    newlines = []
-                    for line in f:
-                        if onumber in line:
-                            newlines.append(line.replace('not paid', 'paid'))
-                        else:
-                            newlines.append(line)
+                if float(balance) >= amount:
+                    new_balance = float(balance) -  amount
+                    newlines_bank.append(line_bank.replace(str(balance), str(new_balance)))
+                    newlines_bank.append("\n")
+                    
+                    with open('order.txt','r') as f:
+                        newlines = []
+                        for line in f:
+                            if onumber in line:
+                                newlines.append(line.replace('not paid', 'paid'))
+                            else:
+                                newlines.append(line)
 
-                with open('order.txt', 'w') as f:
-                    for line in newlines:
-                        f.write(line)
-                 
+                    with open('order.txt', 'w') as f:
+                        for line in newlines:
+                            f.write(line)
+                    store_bank_account("card", amount)
+
+                else:
+                    print("You have insufficient funds")  
                 
             else:
                 newlines_bank.append(line_bank)
@@ -264,14 +284,13 @@ def card_payment(amount):
             f.write(line)
             
 # main for payment functions
-def payment_option():
+def payment_option(onum, total):
     payment_option =  input("Please choose a payment option (cash or card): ")
-    amount = float(input("Please enter the amount to be paid:"))
 
     if payment_option == "cash":
-            cash_payment(amount)
+            cash_payment(onum, total)
     elif payment_option == "card":
-            card_payment(amount)
+            card_payment(onum, total)
     else:
             print("Error: Invalid payment option.")
             
@@ -281,6 +300,7 @@ def search():
         for line in f:
             if order_num in line:
                 print(line)
+
             
 
 def search_sales_list():
@@ -292,11 +312,11 @@ def search_sales_list():
             if food_name in line:
                 item = (line.split(","))
                 quantity = item[4]
-                sales = item[5]
+                sales = item[7]
                 total_items = total_items + int(quantity)
-                total_sales = total_sales + int(sales)
-    print(total_items)
-    print("R " + str(total_sales))
+                total_sales = total_sales + float(sales)
+    print("\nTotal Quantity for "  + str(food_name)  + " is = " + str(total_items))
+    print("Total Sales for " + food_name + " is = R " + str(total_sales))
      
             
 def main():
