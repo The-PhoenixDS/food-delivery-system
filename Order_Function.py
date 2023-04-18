@@ -293,10 +293,6 @@ def search_sales_list():
                 total_sales = total_sales + int(sales)
     print(total_items)
     print("R " + str(total_sales))
-    
-    
-search_sales_list()
-
      
             
 def main():
@@ -308,6 +304,7 @@ def main():
     print('2-Edit_order')
     print('3-Cancel_order')
     print('4-Search_order')
+    print('5-search_sales_list')
 
     print()
     user_option = int(input('option: '))
@@ -320,4 +317,6 @@ def main():
         cancel_order()
     elif user_option == 4:
         search()
+    elif user_option == 5:
+        search_sales_list()
 main()
