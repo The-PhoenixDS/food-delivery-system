@@ -323,4 +323,11 @@ def main():
         search()
     elif user_option == 5:
         search_sales_list()
+        
+    Repeat = input("Would you like to return to Main_Menu?").lower()
+    if Repeat == "Yes":
+        main()
+    else:
+        print("Thank You Bye")
+        exit()
 main()
