@@ -271,7 +271,23 @@ def payment_option():
     else:
             print("Error: Invalid payment option.")
             
-            
+
+def search_items_list():
+    total_items = 0
+    total_sales = 0
+    food_name = input("Please give me your food_name :")
+    with open('order.txt', 'r') as f:
+        for line in f:
+            if food_name in line:
+                item = (line.split(","))
+                quantity = item[4]
+                sales = item[5]
+                total_items = total_items + int(quantity)
+                total_sales = total_sales + int(sales)
+    print(total_items)
+    print("R " + str(total_sales))
+
+     
             
 def main():
     main_menu = ("take_order", "edit_order", "cancel_order", "search_order")
