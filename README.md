@@ -8,7 +8,7 @@ FOOD ORDERING SYSTEM
 - Features
 - Setup
 - Usage
-- Project staus
+- Project status
 - Room for improvement
 
 ## General Info
