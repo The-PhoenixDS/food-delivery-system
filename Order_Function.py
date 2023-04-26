@@ -1,148 +1,95 @@
-import random
-import datetime
-now = datetime.datetime.now()
-with open('Menu_Description.txt', 'r') as f:
-        menu = {}
-        for line in f:
-            values = line.strip().split(',')
-            if len(values) == 2:
-                food_name = values[0].strip()
-                v = values[1].strip('\\')
-                v =v.strip('R')
-                v =v.strip('}')
-                price = float(v.strip('\\'))
-                menu[food_name] = price
-        for food_name, price in menu.items():
-            print(f'{food_name}  R{price:.2f}')
 
+order = {}
 
-def take_order():
-    menu = {
-        'Burger': 40.00,
-        'Drink': 15.00,
-        'Fries': 20.00,
-        'Wraps': 32.00,
-        'Wings': 43.00,
-        'Lamb Chops': 76.00,
-    }
-
-    order = {}
-    total_cost = 0.0
+def edit_order():
+    # Prompt the user to enter their order number
+    onum = input("Please enter your order number: ")
 
     while True:
-        food_name = input("What would you like to order? (type 'n' to finish) ")
-        if food_name == 'n':
-            break
-
-        if food_name not in menu:
-            print("Sorry, we don't have that at the moment.")
-            continue
-
-        else:
-            exit
-
-        item_num = int(input(f"How many {food_name}s would you like to order? "))
-        total = menu[food_name] * item_num
-        order[food_name] = item_num
-        total_cost += total
-
-        order_number = random.randint(10, 1000)
-        date = now.strftime("%Y-%m-%d")
-        time = now.strftime("%H:%M:%S")
-    print("Your order number: ", order_number)
-    with open('order.txt', 'a') as f:
-        f.write(str(order_number) + ',' + str(date) + ',' + str(time) + ',')
-        for food_name, item_num,  in order.items():
-            order_line = f"{food_name},{item_num},"
-            print(order_line, end='')
-            f.write(order_line)
-
-        total_line = f"R{total_cost:.2f}\n"
-
-        f.write(total_line)
-
-    print(f"Total cost: {total_cost:.2f}")
-
-
-take_order()
-
-
- 
+        answer = input("Would you like to edit your order? (Y/N) ")
+        if answer.lower() == "y":
+            while True:
+                edit_answer = input("Would you like to add or remove another item? (Add/Remove/Finish): ")
+                if edit_answer.lower() == "add":
+                    item_to_add = input("Please enter the item you would like to add: ")
+                    quantity_to_add = None
+                    while quantity_to_add is None or quantity_to_add <= 0:
+                        try:
+                            quantity_to_add = int(input("Please enter the quantity of the item you would like to add: "))
+                            if quantity_to_add <= 0:
+                                print("Invalid quantity. Please enter a positive integer.")
+                        except ValueError:
+                            print("Invalid quantity. Please enter a positive integer.")
+                            quantity_to_add = None
     
-def cancel_order():
-    
-    onumber = input("Plesae give us an order number")
-    conumber = onumber +  'cancel'
-    # Read in the file
-    with open('/Users/damacm182_/Desktop/orders.csv', 'r') as file :
-        filedata = file.read()
-    
-
-    # Replace the target string
-    filedata = filedata.replace(onumber,conumber )
-    
-
-    # Write the file out again
-    with open('/Users/damacm182_/Desktop/orders.csv', 'w') as file:
-        file.write(filedata)
-
-
-def view_cancelled_orders():
-    with open(r'/Users/damacm182_/Desktop/orders.csv', 'r') as fp:
-        # read all lines in a list
-        lines = fp.readlines()
-        for line in lines:
-            # check if string present on a current line
-            if 'cancel' in line[0:10] :
-                print(line)
-
-
-orderc = input("Please select an option: 1- Cancelling Order, 2- View Cancelled orders")
-
-if orderc == "1":
-    cancel_order()
-    print("Order cancelled succesfully")
-elif orderc == "2":
-    view_cancelled_orders()
-else:
-    print("Invalid selection")
-    exit()
+                    # Use lower() method to convert the item to lowercase before checking if it's already in the order
+                    if item_to_add.lower() in order:
+                        order[item_to_add.lower()] += quantity_to_add
+                    else:
+                        order[item_to_add.lower()] = quantity_to_add
+                    print(f"{quantity_to_add} {item_to_add}(s) have been added to your order.")
    
-hfdfnhfjhvghj
-\gjyfyhfj
-
-# ask the user if they want to edit their order
-while True:
-    answer = input("Would you like to edit your order? (Y/N): ")
-    if answer == "Y":
-        
-# give the user options to add or remove an item
-        while True:
-            edit_answer = input("What would you like to do? Add or Remove an item? (Add/Remove): ")
-            if edit_answer == "Add":
-                item_to_add = input("Please enter the item you would like to Add: ")
-                if item_to_add == "Burger":  
-                    burger_counter=burger_counter+1
-                    print(f"{item_to_add} has been added to your order.")
-                
-                break
-# remove the item from the order list
-            elif edit_answer == "Remove":
-                item_to_remove = input("Please enter the item you would like to remove: ")
-                if item_to_remove == "Burger":
-                    burger_counter=burger_counter-1
-                    print(f"{item_to_remove} has been removed from your order.")
-                    break
+                elif edit_answer.lower() == "remove":
+                    item_to_remove = input("Please enter the item you would like to remove: ")
+                    if item_to_remove.lower() not in order:
+                        print(f"Sorry, {item_to_remove} is not in your order.")
+                    else:
+                        quantity_to_remove = None
+                        while quantity_to_remove is None or quantity_to_remove <= 0:
+                            try:
+                                quantity_to_remove = int(input("Please enter the quantity of the item you would like to remove: "))
+                                if quantity_to_remove <= 0:
+                                    print("Invalid quantity. Please enter a positive integer.")
+                                elif quantity_to_remove > order[item_to_remove.lower()]:
+                                    print(f"Sorry, you have only {order[item_to_remove.lower()]} {item_to_remove}(s) in your order.")
+                                    quantity_to_remove = None
+                            except ValueError:
+                                print("Invalid quantity. Please enter a positive integer.")
+                                quantity_to_remove = None
+        # Use lower() method to convert the item to lowercase before checking if it's in the order
+                        if order[item_to_remove.lower()] >= quantity_to_remove:
+                            order[item_to_remove.lower()] -= quantity_to_remove
+                            print(f"{quantity_to_remove} {item_to_remove}(s) have been removed from your order.")
+                        else:
+                            print(f"Sorry, {item_to_remove} is not in your order or has already been removed.")
+                    continue    
+                if edit_answer.lower() == "finish":
+                        break
                 else:
-                    print(f"Sorry, {Myorderfood} is not in your order.")
+                        print("Invalid input. Please enter 'Add', 'Remove', or 'Finish'.")
+        elif answer.lower() == "n":
+            print("Thank you for your order.")
+            break
         else:
-                print("Invalid input. Please enter 'Add' or 'Remove'.")
-    
-    elif answer == "N":
-        print("Thank you for your order.")
-        break
-    else:
-        print("Invalid input. Please enter 'Y' or 'N'.")
+            print("Invalid input. Please enter 'Y' or 'N'.")
+        
+def main():
+    while True:
+        print()
+        print('Choose an option:')
+        print('1 - Order food')
+        print('2 - Edit order')
+        print('3 - Cancel order')
+        print('4 - Search order')
+        
+        user_option = int(input('Option: '))
+        
+        if user_option == 1:
+            take_order()
+        elif user_option == 2:
+            edit_order()
+        elif user_option == 3:
+            cancel_order()
+        elif user_option == 4:
+            search()
+        else:
+            print("Invalid input. Please enter a number from 1 to 4.")
+            
+main()
+
+
+
+
         
         
 
