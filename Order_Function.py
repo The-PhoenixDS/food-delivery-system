@@ -172,26 +172,25 @@ def view_cancelled_orders():
 def cancel_order():
     newlines = []
 
-    onumber = input("Plesae give us an order number")
+    onumber = input("Plesae give us an order number ")
     # Read in the file
     with open('order.txt', 'r') as file :
         for line in file:
             if onumber in line:
-               if "cancelled" in line:
+                if "cancelled" in line:
                     print("Order already cancelled")
-               elif "pending" in line:
+                elif "pending" in line:
                     print("Order cancelled successfully")
                     newlines.append(line.replace('pending', 'cancelled'))
-               else:
+                else:
                     print("cannot cancel,order already out")
                     newlines.append(line)
             else:
                 newlines.append(line)
 
-
-            with open('order.txt', 'w') as f:
-                    for line in newlines:
-                        f.write(line)
+    with open('order.txt', 'w') as f:
+        for line in newlines:
+            f.write(line)
     # view_cancelled_orders()
     
 def store_bank_account(type_of_payment, amount):
