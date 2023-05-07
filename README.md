@@ -32,7 +32,7 @@ the system is build to:
 - Take orders
 - Receive payments (cash and card payment option)
 - Cancel order
-- Edit order
+- Edit order (add or remove)
 - Search for order
 - Sales history search 
 
@@ -42,4 +42,4 @@ creation stage
 currently nothing however time changes and way of doing things will bring more ideas on how to improve our system.
 
 ##Acknowledgement
-Phoenix team for doing their best to create best fodod orderin system
+Phoenix team for doing their best to create best food orderin system
