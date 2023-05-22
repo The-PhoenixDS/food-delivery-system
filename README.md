@@ -15,7 +15,7 @@ FOOD ORDERING SYSTEM
 This system will be taking customers ofood orders, make payments and as we know that as we take orders we make mistakes sometimes hence we provided cancel option. This sysyem is user friendly and it has many options which will make things simple for the business and also save customers time by delivering fast service.
 
 ## Technologies used
-Python, VS-Code, Pycharm and postgresql
+Python, VS-Code, Pycharm, postgresql, pandas, Tkinter
 
 ## Features
 - order
