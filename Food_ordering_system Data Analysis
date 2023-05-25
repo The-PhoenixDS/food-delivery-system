@@ -1,0 +1,319 @@
+import pandas as pd
+df = pd.read_csv('food_booking.csv')
+df
+df['Item Name'].mode()
+#convert to date
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+df
+df['total_price'] = df['Quantity'] * df['Product Price'] 
+df['hours'] = df['Order Date'].dt.hour
+
+df['year'] = pd.DatetimeIndex(df['Order Date']).year
+df['month'] = pd.DatetimeIndex(df['Order Date']).month
+df['day'] = pd.DatetimeIndex(df['Order Date']).day
+
+#1 total revenue
+total_revenue = df['total_price'].sum()
+print(total_revenue)
+#2,3 monthly average revenue
+revenue_by_month = df.groupby((df['month']))['total_price'].mean()
+
+revenue_by_day = df.groupby((df['day']))['total_price'].mean()
+
+revenue_by_year = df.groupby((df['year']))['total_price'].mean()
+
+revenue_by_hour = df.groupby((df['hours']))['total_price'].mean()
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = revenue_by_hour.values
+
+plt.plot(x, color = 'b')
+plt.show()
+
+#
+item = df['Item Name'].mode()
+df
+#Popular item on the menu
+item = df['Item Name'][df['Quantity']].mode()
+print(item)
+
+#Sales changes over time for most popular item
+popular_item = df.loc[df['Quantity'] == True, 'Item Name'].mode().values[0]
+popular_item_df = df[df['Item Name'] == popular_item]
+sales_by_month = popular_item_df.groupby('month')['Product Price'].sum()
+sales_by_year = popular_item_df.groupby('year')['Product Price'].sum()
+sales_by_days = popular_item_df.groupby('day')['Product Price'].sum()
+print("Total Sales of Popular Item by Month:")
+print(sales_by_month)
+
+print("Total Sales of Popular Item by Year:")
+print(sales_by_year)
+
+print("Total Sales of Popular Item by Days:")
+print(sales_by_days)
+
+import matplotlib.pyplot as plt
+
+popular_item = df.loc[df['Quantity'] == True, 'Item Name'].mode().values[0]
+popular_item_df = df[df['Item Name'] == popular_item]
+sales_by_year = popular_item_df.groupby('year')['Product Price'].sum()
+
+# Plotting sales by year
+plt.figure(figsize=(10, 6))
+sales_by_year.plot(kind='bar', color='green')
+plt.title('Total Sales of Popular Item by Year')
+plt.xlabel('Year')
+plt.ylabel('Sales(R)')
+plt.xticks(rotation=0)
+plt.show()
+#Total quantity of items ordered
+total_qua = df['Quantity'].sum()
+print(total_qua)
+#Least bought items ordered
+
+item_counts = df.groupby('Item Name')['Quantity'].sum()
+
+# Find the item with the minimum quantity
+least_bought_item = item_counts.idxmin()
+
+# Retrieve the quantity of the least bought item
+least_bought_quantity = item_counts.min()
+
+
+print("Least bought item:", least_bought_item)
+print("Quantity:", least_bought_quantity)
+#Item with highest price
+high_price = df['Product Price'].max()
+item_name = df.loc[df['Product Price'] == high_price, 'Item Name'].values[0]
+
+
+print("Name of item:", item_name)
+print("Price:", high_price)
+#Items frequently bought together
+import itertools
+
+# Group the data by 'Order Number' and create a list of items for each order
+order_groups = df.groupby('Order Number', group_keys=False)['Item Name'].apply(list)
+
+# Create a dictionary to store the counts of each pair of items
+pair_counts = {}
+
+# Iterate over each order group
+for items in order_groups:
+    # Generate all possible pairs of items within the order
+    pairs = list(itertools.combinations(items, 2))
+    
+    # Update the count of each pair of items
+    for pair in pairs:
+        if pair in pair_counts:
+            pair_counts[pair] += 1
+        else:
+            pair_counts[pair] = 1
+
+# Find the pair that appears the most frequently
+most_frequent_pair = max(pair_counts, key=pair_counts.get)
+frequency = pair_counts[most_frequent_pair]
+
+# Print the most frequent pair
+item1, item2 = most_frequent_pair
+print("Most Frequent Pair:", item1, "and", item2)
+print("Frequency:", frequency)
+
+
+
+
+#Average of least bought items
+#Unique items ordered
+
+item_counts = df.groupby('Item Name')['Quantity'].mean()
+
+# Find the item(s) with the minimum quantity
+least_bought_items = item_counts[item_counts == item_counts.min()]
+
+# Calculate the average of the least bought items
+average_least_bought = least_bought_items.mean()
+
+
+print("Average quantity:", average_least_bought)
+
+# Average quantity per orders
+average_quantity = df.groupby('Order Number')['Quantity'].mean()
+
+# Print the result
+print("Average Quantity per Order:")
+print(average_quantity)
+#Average money spent in each order 
+ave_order = df.groupby('Order Number')['total_price'].mean()
+print(ave_order)
+
+#Order placed in a quarter
+
+# Convert the 'order_date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific quarter of interest
+specific_year = 2015  # Replace with the desired year
+specific_quarter = 1  # Replace with the desired quarter (1, 2, 3, 4)
+
+# Filter the DataFrame for the specific quarter
+quarter_df = df[(df['Order Date'].dt.year == specific_year) & (df['Order Date'].dt.quarter == specific_quarter)]
+
+# Count the number of orders in the specific quarter
+number_of_orders = len(quarter_df)
+
+print("Number of Orders in Specific Quarter:", number_of_orders)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Convert the 'order_date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Extract the year and quarter from the 'Order Date' column
+df['Year'] = df['Order Date'].dt.year
+df['Quarter'] = df['Order Date'].dt.quarter
+year = 2015
+
+# Group the data by year and quarter and count the number of orders
+quarterly_orders = df.groupby(['Year', 'Quarter']).size().reset_index(name='Number of Orders')
+
+# Create a bar graph
+plt.bar(quarterly_orders.index, quarterly_orders['Number of Orders'])
+
+# Set the x-axis labels
+plt.xticks(quarterly_orders.index, quarterly_orders.apply(lambda row: f"Q{row['Quarter']}\n{row['Year']}", axis=1))
+
+# Set the y-axis label
+plt.ylabel('Number of Orders')
+
+# Set the title of the graph
+plt.title('Number of Orders by Quarter')
+
+# Display the bar graph
+plt.show()
+
+#Order placed in a year
+# Convert the 'order_date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific quarter of interest
+specific_year = 2016  # Replace with the desired year (2015, 2016, 2017, 2018, 2019)
+
+# Filter the DataFrame for the specific quarter
+year_df = df[df['Order Date'].dt.year == specific_year]
+
+# Count the number of orders in the specific quarter
+number_of_orders = len(year_df)
+
+print("Number of Orders in Specific Year:", number_of_orders)
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Convert the 'order_date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific year
+specific_year = 2016  # Replace with the desired year (2015, 2016, 2017, 2018, 2019)
+
+# Filter the DataFrame for the specific year
+year_df = df[df['Order Date'].dt.year == specific_year]
+
+# Group the data by month and count the number of orders in each month
+monthly_orders = year_df.groupby(year_df['Order Date'].dt.month).size()
+
+# Create a line graph to visualize the number of orders over time
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+plt.plot(months, monthly_orders, marker='o')
+
+# Set the labels and title of the line graph
+plt.xlabel('Month')
+plt.ylabel('Number of Orders')
+plt.title(f'Number of Orders over Time - {specific_year}')
+
+# Display the line graph
+plt.show()
+
+#Average order placed each year 
+ave_order_year = df.groupby('year')['Quantity'].mean()
+print(ave_order_year)
+#Overall sales over the years
+# Convert the 'Order Date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific year of interest
+specific_year = 2015  # Replace with the desired year
+
+# Filter the DataFrame for the specific year
+year_df = df[df['Order Date'].dt.year == specific_year]
+
+# Calculate the total sales for the specific year
+total_sales_specific_year = year_df['Product Price'].sum()
+
+print("Total Sales in Specific Year:", total_sales_specific_year)
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Convert the 'Order Date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Group the data by year and calculate the total sales for each year
+yearly_sales = df.groupby(df['Order Date'].dt.year)['Product Price'].sum()
+
+# Create a bar graph to visualize the total sales for each year
+plt.bar(yearly_sales.index, yearly_sales, color='red')
+
+# Set the labels and title of the bar graph
+plt.xlabel('Year')
+plt.ylabel('Total Sales')
+plt.title('Total Sales by Year')
+
+# Display the bar graph
+plt.show()
+
+#Sales per month
+# Convert the 'Order Date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific year of interest
+specific_year = 2015  # Replace with the desired year
+
+# Filter the DataFrame for the specific year
+year_df = df[df['Order Date'].dt.year == specific_year]
+
+# Group the data by month and calculate the total sales for each month
+monthly_sales = year_df.groupby(year_df['Order Date'].dt.month)['Product Price'].sum()
+
+print("Sales per Month in Specific Year:")
+print(monthly_sales)
+
+
+#Total Sales and orders for all years
+# Calculate the total sales for all years combined
+total_sales = df['total_price'].sum()
+
+# Count the number of orders for all years combined
+total_orders = len(df)
+
+print("Total Sales for All Years Combined:", total_sales)
+print("Total Orders for All Years Combined:", total_orders)
+
+#Sales in a specific quarter
+# Assuming 'order_date' is a column in your DataFrame representing the order dates
+
+# Convert the 'order_date' column to datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+
+# Specify the specific quarter of interest
+specific_year = 2015  # Replace with the desired year
+specific_quarter = 1  # Replace with the desired quarter (1, 2, 3, 4)
+
+# Filter the DataFrame for the specific quarter
+quarter_df = df[(df['Order Date'].dt.year == specific_year) & (df['Order Date'].dt.quarter == specific_quarter)]
+
+# Count the number of orders in the specific quarter
+sales_qua = quarter_df['Product Price'].sum()
+
+print("sales in Specific Quarter:", sales_qua)

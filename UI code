@@ -1,0 +1,504 @@
+import tkinter as tk
+from tkinter import ttk
+from tkinter import*
+from PIL import Image, ImageTk
+import random
+from datetime import date
+from datetime import datetime
+import psycopg2
+root  = Tk()
+from tkinter import messagebox
+
+mainFrame = ttk.Frame(root, width = 800, height = 500, style = 'MainFrame.TFrame')
+mainFrame.grid(row = 0, column = 0, sticky = "NSEW")
+
+
+
+root.title("Phoenix Restaurant")
+s = ttk.Style()
+s.configure('body.TFrame', background = "black", relief = "raised")
+width = 800
+height = 500
+root.geometry("%dx%d" % (width, height))
+root.resizable(True,True)
+
+
+def add(opt):
+    
+    # updating the transaction label
+    if opt == 'Burger':
+        order_total = priceburger.cget("text")
+        added_dish = burgerL.cget("text") + "\n" 
+    elif opt == 'Fries':
+        order_total = pricefries.cget("text")
+        added_dish = friesL.cget("text") + "\n" 
+    elif opt == 'Drink':
+        order_total = priceburger.cget("text")
+        added_dish = drinkL.cget("text") + "\n" 
+    elif opt == 'Wings':
+        order_total = pricewings.cget("text")
+        added_dish = wingsL.cget("text") + "\n"
+    elif opt == 'Wrapster':
+        order_total = pricewrapster.cget("text")
+        added_dish = wrapsterL.cget("text") + "\n"
+        
+    else:
+        order_total = pricelambchops.cget("text")
+        added_dish = lambchopsL.cget("text") + "\n" 
+
+    current_order = orderTransaction.cget("text")
+    updated_order = current_order + added_dish
+    orderTransaction.configure(text=updated_order)
+
+    # updating the order total label
+    
+   
+    order_total = order_total
+    now = orderTotalLabel.cget("text")
+    updated_total = float(order_total) + int(now)
+    orderTotalLabel.configure(text=(updated_total) )
+
+def remove(opt):
+    
+    current_order = orderTransaction.cget("text")
+    # updating the order total label
+    if opt == 'Burger':
+        order_total = priceburger.cget("text")
+    elif opt == 'Fries':
+        order_total = pricefries.cget("text")
+    elif opt == 'Drink':
+        order_total = pricedrink.cget("text")
+    elif opt == 'Wings':
+        order_total = pricewings.cget("text")
+    elif opt == 'Wrapster':
+        order_total = pricewrapster.cget("text")
+    elif opt == 'Lamb Chops':
+         order_total = pricelambchops.cget("text")
+    else:
+        order_total = pricelambchops.cget("text")
+
+    order_total = order_total
+    now = orderTotalLabel.cget("text")
+    if opt in current_order:
+        updated_total = int(now) - int(order_total) 
+        start = current_order.find(opt)
+        end = start + len(opt)
+        updated_order = current_order[0:start] + current_order[end:]
+        orderTransaction.configure(text=updated_order)
+    else:
+        updated_total = orderTotalLabel.cget("text")
+    if int(updated_total) <= 0:
+        updated_total =  0
+    orderTotalLabel.configure(text=str(updated_total) )
+
+
+def order():
+    
+    messagebox.showinfo("order placed","your order has been succefully placed")
+    transaction_list = orderTransaction.cget("text")
+    order_day = date.today()
+    order_time = datetime.now()
+    order_num = random.randint(10, 1000)
+    itemlistz = ['Burger', 'Fries', 'Wrapster', 'Wings','Drink','Lamb Chops']
+    for itemz in itemlistz:
+        if itemz in transaction_list:
+            itemnum = int(transaction_list.count(itemz))
+            total = itemnum * int(priceburger.cget("text"))
+
+            conn = psycopg2.connect(database="food_ordering_system",
+                                user="postgres",
+                                password="",
+                                host="localhost", port="5432")
+
+            cur = conn.cursor()
+
+
+            # Insert the data into the table
+            cur.execute(
+
+
+                '''INSERT INTO orders \
+                ( order_number,dates,hour,food_name,item_num,order_status,payment_status,total_cost) VALUES (%s, %s,%s, %s,%s, %s,%s,%s)''',
+                (order_num,order_day,order_time,itemz,itemnum,"Pending","Not Paid",total))
+
+            conn.commit()
+            cur.close()
+
+
+    orderTransaction.configure(text="")
+    orderTotalLabel.configure(text="")
+
+
+        
+s = ttk.Style()
+s.configure('MenuLabel.TLabel',
+            background = "#0F1110",
+            font = ("Arial", 13, "italic"),
+            foreground = "Black",
+            padding = (5, 5, 5, 5),
+            anchor = "center",
+            width = 21
+            )
+
+
+# displayDefaultImageObject = Image.open("/Users/da_mac_41_/Downloads/p1/test/Images/display - Default.png").resize((130,130))
+ #displayDefaultImage = ImageTk.PhotoImage(displayDefaultImageObject)
+
+burgerImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/burger.jpeg").resize((90,90))
+Burger = ImageTk.PhotoImage(burgerImageObject)
+
+bg_image = tk.PhotoImage("/Users/damac44/Downloads/UI_food_ordering_system/images/burger.jpeg")
+bg_label = tk.Label(root, image=bg_image)
+bg_label.place(relwidth=1, relheight=1)
+
+# Create a ttk.Frame widget and place it on top of the label
+frame = ttk.Frame(root, width=200, height=200, style='My.TFrame')
+frame.place(relx=0.5, rely=0.5, anchor='center')
+
+
+header = ttk.Frame(mainFrame)
+header.grid(row = 0, column = 0, sticky = "NSEW", columnspan = 1)
+
+TopBannerImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/banner.jpg").resize((900, 200))
+TopBannerImage = ImageTk.PhotoImage(TopBannerImageObject)
+
+TopbannerLabel = ttk.Label(header, image = TopBannerImage, background = "#0F1110")
+TopbannerLabel.grid(row = 0, column = 0, sticky = "W")
+
+# Define a custom style for the frame with transparent background
+style = ttk.Style()
+style.configure('My.TFrame', background='black', relief = "raised")
+
+FriesImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/fries.jpeg").resize((90,90))
+Fries = ImageTk.PhotoImage(FriesImageObject)
+
+
+
+logoImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/logoDesign.jpeg").resize((250,150))
+logo = ImageTk.PhotoImage(logoImageObject)
+
+TopImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/banner.jpg").resize((250,150))
+Topbanner = ImageTk.PhotoImage(TopImageObject)
+
+
+TopBannerImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/banner.jpg").resize((980, 200))
+TopBannerImage = ImageTk.PhotoImage(TopBannerImageObject)
+
+
+
+DrinkImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/cocktail.jpeg").resize((90,90))
+Drink = ImageTk.PhotoImage(DrinkImageObject)
+
+WingsImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/wings.jpeg").resize((90,90))
+Wings = ImageTk.PhotoImage(WingsImageObject)
+
+WrapsterImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/wrapster.jpeg").resize((90,90))
+Wrapster = ImageTk.PhotoImage(WrapsterImageObject)
+
+LambImageObject = Image.open("/Users/damac44/Downloads/UI_food_ordering_system/images/lambchops.jpeg").resize((90,90))
+Lambchops = ImageTk.PhotoImage(LambImageObject)
+
+# widgets
+
+mainFrame = ttk.Frame(root, width = 800, height = 580, style = 'MainFrame.TFrame')
+mainFrame.grid(row = 0, column = 0, sticky = "NSEW")
+
+header = ttk.Frame(mainFrame)
+header.grid(row = 0, column = 0, sticky = "NSEW", columnspan = 1)
+
+MainMenuLabel = ttk.Label(mainFrame, text = "MENU", style = "MenuLabel.TLabel")
+MainMenuLabel.grid(row = 1, column = 0, sticky = "WE",pady = 10)
+MainMenuLabel.configure(
+    anchor = "center",
+    font = ("Helvetica", 14, "bold")
+)
+
+
+body = ttk.Frame(mainFrame, style = "body.My.TFrame")
+body.grid(row = 2, column = 0, sticky = "NSEW", pady = 10, padx=10)
+
+LogoLabel = ttk.Label(mainFrame, image = logo, background = "#0F1110")
+LogoLabel.grid(row = 0, column = 0, sticky = "W")
+
+OptionMenu = ttk.Frame(mainFrame, style = "optionMenu.My.TFrame")
+OptionMenu.grid(row = 2, column = 2, sticky = "NSEW", pady = 10, padx=10)
+
+OptionMenuLabel = ttk.Label(mainFrame, text = "OPTIONS", style = "OptionMenuLabel.TLabel")
+OptionMenuLabel.grid(row = 1, column = 2, sticky = "WE",pady = 10)
+OptionMenuLabel.configure(
+    anchor = "center",
+    font = ("Helvetica", 14, "bold")
+)
+
+def cancel_order():
+    
+ 
+    
+    entry = tk.Entry(mainFrame)
+    entry.pack()
+    order_number = entry.get()
+
+    conn = psycopg2.connect(database="food_ordering_system",
+                            user="postgres",
+                            password="",
+                            host="localhost",
+                            port="5432")
+
+    cur1 = conn.cursor()
+    cur2 = conn.cursor()
+
+    cur1.execute("SELECT order_status FROM orders WHERE order_number = %s", (int(order_number),))
+    result = cur1.fetchall()
+
+    if result:
+        if result[0][0] == 'cancelled':
+            messagebox.showinfo("Order already cancelled.")
+        elif result[0][0] == 'pending':
+            cur2.execute("UPDATE orders SET order_status = 'cancelled' WHERE order_number = %s", (order_number,))
+            conn.commit()
+            messagebox.showinfo("Order Cancellation", "Order has been cancelled.")
+        else:
+            messagebox.showinfo("Cannot cancel, order already out.")
+    else:
+        messagebox.showinfo("Invalid Order Number", "Order number does not exist.")
+
+    cur1.close()
+    cur2.close()
+    conn.close()
+    
+options = ttk.Frame()
+options.grid()
+
+search = ttk.Button(OptionMenu, text="Cancel", command=cancel_order)
+search.grid(row=5, column=0, padx=10, pady=10)
+
+text2 = Text(OptionMenu, height=1, width=8)
+text2.grid(row= 5, column= 1, padx=10, pady=10)
+
+results = ttk.Label(OptionMenu, text = "Cancelled")
+results.grid(row = 6, column = 1, sticky = "WE", padx=10, pady=10)
+results.configure(
+    font = ("Helvetica", 14, "bold")
+)
+    
+def search():
+    # Establish a connection to the database
+    conn = psycopg2.connect(database="food_ordering_system",
+                            user="postgres",
+                            password="", # replace with the actual password
+                            host="localhost",
+                            port="5432")
+
+    # Create a cursor object to execute SQL statements
+    cur = conn.cursor()
+
+    # Execute the SELECT statement with the order_id specified in the Text widget
+    order_id = int(text1.get('1.0')) # retrieve the contents of the Text widget
+    cur.execute("SELECT * FROM orders WHERE order_id = %s", (order_id,))
+
+    # Retrieve the result set as a list of tuples
+    result = cur.fetchall()
+    results1.configure(text = result)
+
+
+    # Do something with the result, e.g. display it in a separate window
+    # ...
+
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
+
+
+# Create a search button and a Text widget for the user to input the order ID
+options = ttk.Frame()
+options.grid()
+
+search = ttk.Button(OptionMenu, text="search", command=search)
+search.grid(row=0, column=0, padx=10, pady=10)
+
+text1 = Text(OptionMenu, height=1, width=8)
+text1.grid(row= 0, column= 1, padx=10, pady=10)
+
+results1 = ttk.Label(OptionMenu, text = "order")
+results1.grid(row = 2, column = 1, sticky = "WE", padx=10, pady=10)
+results1.configure(
+    font = ("Helvetica", 14, "bold")
+)
+
+def search_sales():
+    # Establish a connection to the database
+    conn = psycopg2.connect(database="food_ordering_system",
+                            user="postgres",
+                            password="", # replace with the actual password
+                            host="localhost",
+                            port="5432")
+
+    # Create a cursor object to execute SQL statements
+    cur = conn.cursor()
+
+    # Execute the SELECT statement with the order_id specified in the Text widget
+    food_name = (text.get("1.0", "end-1c")) # retrieve the contents of the Text widget
+
+    cur.execute("SELECT food_name, SUM(orders.item_num) AS total_itemNO ,SUM(total_cost) AS total_cost FROM orders WHERE food_name = %s  GROUP BY food_name", (food_name,))
+
+    # Retrieve the result set as a list of tuples
+    result = cur.fetchall()
+    results.configure(text = result)
+
+
+    # Do something with the result, e.g. display it in a separate window
+    # ...
+
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
+
+
+search = ttk.Button(OptionMenu, text="search sales list", command=search_sales)
+search.grid(row=3, column=0, padx=10)
+
+text = Text(OptionMenu, height=1, width=15)
+text.grid(row=3, column=1, padx=10, pady=10)
+
+results = ttk.Label(OptionMenu, text = "sales results")
+results.grid(row = 4, column = 1, sticky = "WE", padx=10, pady=10)
+results.configure(
+    font = ("Helvetica", 14, "bold")
+)
+
+
+burgerL = ttk.Label(body, image = Burger, text = "Burger",background = "#0F1110")
+burgerL.grid(row =0 , column = 0, sticky = "W",padx = 3,pady = 3)
+
+priceburger = ttk.Label(body, text = 40.00, style = "MenuLabel.TLabel")
+priceburger.grid(row = 1, column = 0, sticky = "WE",pady=3, padx = 3)
+priceburger.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+burgerorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Burger'))
+burgerorder.grid(row = 2, column = 0, pady=3, padx = 3)
+
+burgerminus = ttk.Button(body, text ="Remove", command=lambda: remove('Burger'))
+burgerminus.grid(row = 3, column = 0, pady=3, padx = 3)
+
+
+friesL = ttk.Label(body, image = Fries, text = "Fries", background = "#0F1110")
+friesL.grid(row = 0, column = 1, sticky = "NSEW", pady=3, padx = 3)
+
+pricefries = ttk.Label(body, text = 20.00, style = "MenuLabel.TLabel")
+pricefries.grid(row = 1, column = 1, sticky = "WE", pady=3, padx = 3)
+pricefries.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+
+friesorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Fries'))
+friesorder.grid(row = 2, column = 1, pady=3, padx = 3)
+
+friesminus = ttk.Button(body, text ="Remove", command=lambda: remove('Fries'))
+friesminus.grid(row = 3, column = 1, pady=3, padx = 3)
+
+
+wingsL = ttk.Label(body, image = Wings, text = "Wings", background = "#0F1110")
+wingsL.grid(row = 4, column = 0, sticky = "W",pady=3, padx = 3)
+
+pricewings = ttk.Label(body, text = 43.00, style = "MenuLabel.TLabel")
+pricewings.grid(row = 5, column = 0, sticky = "WE", pady=3, padx = 3)
+pricewings.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+
+wingsorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Wings'))
+wingsorder.grid(row = 6, column = 0, pady=3, padx = 3)
+
+wingsminus = ttk.Button(body, text ="Remove", command=lambda: remove('Wings'))
+wingsminus.grid(row = 7, column = 0, pady=3, padx = 1)
+
+
+drinkL = ttk.Label(body, image = Drink, text = "Drink", background = "#0F1110")
+drinkL.grid(row = 4, column = 1, sticky = "NSEW", pady=3, padx = 3)
+
+pricedrink = ttk.Label(body, text = 15.00, style = "MenuLabel.TLabel")
+pricedrink.grid(row = 5, column = 1, sticky = "WE", pady=3, padx = 3)
+pricedrink.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+
+drinkorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Drink'))
+drinkorder.grid(row = 6, column = 1, pady=3, padx = 3)
+
+
+drinkminus = ttk.Button(body, text ="Remove", command=lambda: remove('Drink'))
+drinkminus.grid(row = 7, column = 1,pady=3, padx = 3)
+
+wrapsterL = ttk.Label(body, image = Wrapster, text = "Wrapster",background = "#0F1110")
+wrapsterL.grid(row = 8, column = 0, sticky = "W", pady=3, padx = 3)
+
+pricewrapster = ttk.Label(body, text = 32.00, style = "MenuLabel.TLabel")
+pricewrapster.grid(row = 9, column = 0, sticky = "WE", pady=3, padx = 3)
+pricewrapster.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+wrapsterorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Wrapster'))
+wrapsterorder.grid(row = 10, column = 0, pady=3, padx = 3)
+
+wrapsterminus = ttk.Button(body, text ="Remove", command=lambda: remove('Wrapster'))
+wrapsterminus.grid(row = 11, column = 0, pady=3, padx =3)
+
+lambchopsL = ttk.Label(body, image = Lambchops, text = "Lamb chops",background = "#0F1110")
+lambchopsL.grid(row = 8, column = 1, sticky = "W", pady=3, padx = 3)
+
+pricelambchops = ttk.Label(body, text = 76.00, style = "MenuLabel.TLabel")
+pricelambchops.grid(row = 9, column = 1, sticky = "WE", pady=3, padx = 3)
+pricelambchops.configure(
+    anchor = "center",
+    font = ("Helvetica", 12, "bold")
+)
+lambchopsorder = ttk.Button(body, text ="Add to cart", command=lambda: add('Lamb chops'))
+lambchopsorder.grid(row = 10, column = 1, padx = 10)
+
+lambchopsminus = ttk.Button(body, text ="Remove", command=lambda: remove('Lamb chops'))
+lambchopsminus.grid(row = 11, column = 1, pady=3, padx = 3)
+
+
+
+
+orderFrame = ttk.Frame(mainFrame, style = "body.TFrame")
+orderFrame.grid(row = 2, column = 1, padx = 3, pady = 3, sticky = "NSEW")
+
+orderIDLabel = ttk.Label(orderFrame, text = "Order Info: ")
+orderIDLabel.configure(
+    background = "black",
+    foreground = "Black",
+    font = ("Helvetica", 12, "italic"),
+    anchor = "center"
+)
+orderIDLabel.grid(row = 0, column = 2, sticky = "EW", pady = 3, padx = 3)
+
+orderTransaction = ttk.Label(orderFrame, style = 'orderTransaction.TLabel')
+orderTransaction.grid(row = 2, column = 0, sticky = "NSEW", pady = 3, padx = 3)
+
+orderTotalLabel = ttk.Label(orderFrame,text = 'Total cost', style = "orderTotalLabel.TLabel")
+orderTotalLabel.grid(row = 3, column = 0, sticky = "EW", pady = 3, padx = 3)
+
+orderTotalLabel = ttk.Label(orderFrame,text = '0', style = "orderTotalLabel.TLabel")
+orderTotalLabel.grid(row = 3, column = 1, sticky = "EW",pady = 3, padx = 3)
+
+# text = Text(orderFrame, height=2, width=8)
+# text.grid(row = 5, column = 0, sticky = "EW")
+
+
+orderButton = ttk.Button(orderFrame, text = "ORDER", command = order)
+orderButton.grid(row = 4, column = 0, sticky = "EW",pady = 3, padx = 3)
+          
+mainFrame.columnconfigure(2, weight = 1)
+mainFrame.rowconfigure(1, weight = 1)
+orderFrame.rowconfigure(1, weight = 1)
+orderFrame.columnconfigure(1, weight = 1)
+
+
+root.mainloop()
